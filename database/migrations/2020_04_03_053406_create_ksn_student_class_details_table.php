@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateKsnStudentRegistrationsTable extends Migration
+class CreateKsnStudentClassDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,15 @@ class CreateKsnStudentRegistrationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ksn_student_registrations', function (Blueprint $table) {
+        Schema::create('ksn_student_class_details', function (Blueprint $table) {
+
             $table->increments('id');
-            $table->string('reg_id');
             $table->integer('student_id')->unsigned();
             $table->integer('class_id')->unsigned();
-            $table->string('academic_year');
-            $table->enum('status', ['0', '1', '2'])->default('1'); 
-
+            $table->integer('academic_year_id')->unsigned();
             $table->foreign('student_id')->references('id')->on('ksn_students')->onDelete('cascade');
-            $table->foreign('class_id')->references('id')->on('ksn_classes')->onDelete('cascade');
-
+            $table->foreign('class_id')->references('id')->on('ksn_classes');
+            $table->foreign('academic_year_id')->references('id')->on('ksn_academic_years');
             $table->timestamps();
         });
     }

@@ -17,4 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/add-book', 'Book\api\bookController@add')->middleware('cors');
+Route::get('/get-classes', 'Common\api\SchoolController@getClasses')->middleware('cors');
+Route::get('/get-academic-years', 'Common\api\SchoolController@getAcademicYears')->middleware('cors');
+Route::post('/register-student', 'Student\api\registerController@add')->middleware('cors');
