@@ -15,5 +15,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Authentication routes
+Auth::routes();
+Route::post('/login', 'Auth\LoginController@postLogin')->name('login');
 
-Route::get('/add-book', 'Book\web\bookController@add');
+// After login routes
+Route::group(['middleware' => ['logincheck']], function () {
+
+    // User dashboard
+    Route::get('/home', 'UserController@index')->name('home');
+
+});
+
