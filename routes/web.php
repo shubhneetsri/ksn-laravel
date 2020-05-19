@@ -23,7 +23,20 @@ Route::post('/login', 'Auth\LoginController@postLogin')->name('login');
 Route::group(['middleware' => ['logincheck']], function () {
 
     // User dashboard
-    Route::get('/home', 'UserController@index')->name('home');
+    //Route::get('/home', 'UserController@index')->name('home');
+    //Route::post('/home', 'UserController@save');
 
+    // Student routes
+    Route::get('/add-student', 'Backend\StudentController@index')->name('add-student');
+    Route::post('/add-student', 'Backend\StudentController@store')->name('add-student');
+    Route::get('/student-list', 'Backend\StudentController@show')->name('student-list');
+
+    // Fillable form elements routes
+    Route::get('/get-classes', 'Common\api\SchoolController@getClasses');
+    Route::get('/get-academic-years', 'Common\api\SchoolController@getAcademicYears');
+    Route::get('/get-countries', 'Common\api\ResourceController@GetCountries');
+    Route::get('/get-states/{country_id}', 'Common\api\ResourceController@GetStates');
+    Route::get('/get-cities/{state_id}', 'Common\api\ResourceController@GetCities');
+    
 });
 

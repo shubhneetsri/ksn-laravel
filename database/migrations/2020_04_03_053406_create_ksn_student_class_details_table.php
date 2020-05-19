@@ -19,6 +19,7 @@ class CreateKsnStudentClassDetailsTable extends Migration
             $table->integer('student_id')->unsigned();
             $table->integer('class_id')->unsigned();
             $table->integer('academic_year_id')->unsigned();
+            $table->enum('status', ['0', '1'])->default('1');
             $table->foreign('student_id')->references('id')->on('ksn_students')->onDelete('cascade');
             $table->foreign('class_id')->references('id')->on('ksn_classes');
             $table->foreign('academic_year_id')->references('id')->on('ksn_academic_years');

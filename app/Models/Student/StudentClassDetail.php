@@ -20,6 +20,20 @@ class StudentClassDetail extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'student_id', 'class_id', 'academic_year_id', 'created_at', 'updated_at'
+        'id', 'student_id', 'class_id', 'academic_year_id', 'status', 'created_at', 'updated_at'
     ];
+
+
+     /**
+     * Save User
+     * @param Array $data
+     * @return model
+     */
+    public function SaveStudentClass($data){
+        
+        $this->fill($data);
+        $this->save();
+        return $this;
+
+    }
 }

@@ -25,6 +25,37 @@ class Student extends Model implements Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'academic_year_id', 'class_id', 'email', 'password', 'reg_number', 'name', 'gender', 'father_name', 'mother_name', 'address', 'phonenumber', 'image', 'dob', 'status', 'created_at', 'updated_at'
+        'id', 'user_id', 'academic_year_id', 'admission_class_id', 'reg_number', 'created_at', 'updated_at'
     ];
+
+    /**
+     * Get User details
+     */
+    public function user(){
+        return $this->belongsTo('App\User','user_id');
+    }
+
+     /**
+     * Save User
+     * @param Array $data
+     * @return model
+     */
+    public function SaveStudent($data){
+        
+        $this->fill($data);
+        $this->save();
+        return $this;
+
+    }
+
+    /**
+     * Get student list
+     * @return Array
+     */
+    public function GetStudentList(){
+        
+        $response = [];
+        return $response = $this->with('user')->paginate(10)->toArray();
+
+    }
 }

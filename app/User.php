@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'id', 'user_type', 'name', 'email', 'password', 'gender', 'phonenumber', 'image', 'dob', 'address', 'state_id', 'city_id', 'status'
     ];
 
     /**
@@ -29,11 +29,16 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * Save User
+     * @param Array $data
+     * @return model
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function SaveUser($data){
+        
+        $this->fill($data);
+        $this->save();
+        return $this;
+
+    }
+
 }
