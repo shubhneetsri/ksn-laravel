@@ -28,6 +28,8 @@ Route::group(['middleware' => ['logincheck']], function () {
 
     // Student routes
     Route::get('/add-student', 'Backend\StudentController@index')->name('add-student');
+    Route::get('/add-student/{id}', 'Backend\StudentController@edit')->name('add-student');
+    Route::post('/add-student/{id}', 'Backend\StudentController@update')->name('add-student');
     Route::post('/add-student', 'Backend\StudentController@store')->name('add-student');
     Route::get('/student-list', 'Backend\StudentController@show')->name('student-list');
 

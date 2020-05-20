@@ -52,3 +52,21 @@ html, body {
 .error{
     color:red;
 }
+
+
+
+
+.jumbotron {
+    padding: 1rem 2rem;
+}
+
+.success_message{
+    border-radius: 5px;
+    padding: 7px 22px;
+}
+
+@media only screen and (max-width: 600px) {
+    .jumbotron {
+        padding: 1rem 2rem;
+    }
+  }

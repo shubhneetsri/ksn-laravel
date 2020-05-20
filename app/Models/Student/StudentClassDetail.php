@@ -23,6 +23,12 @@ class StudentClassDetail extends Model
         'id', 'student_id', 'class_id', 'academic_year_id', 'status', 'created_at', 'updated_at'
     ];
 
+    /**
+     * Get User details
+     */
+    public function detail(){
+        return $this->belongsTo('App\Models\KsnClass','class_id');
+    }
 
      /**
      * Save User

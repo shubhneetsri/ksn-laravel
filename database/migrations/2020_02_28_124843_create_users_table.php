@@ -23,16 +23,18 @@ class CreateUsersTable extends Migration
              * 2 => Staff
              */
             $table->enum('user_type', ['0', '1', '2'])->default('1');
-            $table->string('name');
+            $table->string('name',50);
             $table->enum('gender', ['M', 'F']);
             $table->string('email')->unique();
             $table->string('phonenumber', 20)->nullable();
-            $table->string('password');
-            $table->string('image')->nullable();
+            $table->string('password')->nullable();
             $table->date('dob');
-            $table->string('address');
+            $table->string('address',255);
             $table->integer('state_id')->unsigned();
             $table->integer('city_id')->unsigned();
+            $table->date('date_of_join')->nullable();
+            $table->date('date_of_left')->nullable();
+            $table->string('image')->nullable();
             $table->enum('status', ['0', '1', '2'])->default('1');
             $table->rememberToken();
             $table->timestamps();

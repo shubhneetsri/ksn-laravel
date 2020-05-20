@@ -25,7 +25,7 @@ class Student extends Model implements Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'user_id', 'academic_year_id', 'admission_class_id', 'reg_number', 'created_at', 'updated_at'
+        'id', 'user_id', 'father_name', 'mother_name', 'caste', 'academic_year_id', 'admission_class_id', 'reg_number', 'created_at', 'updated_at'
     ];
 
     /**
@@ -35,27 +35,63 @@ class Student extends Model implements Authenticatable
         return $this->belongsTo('App\User','user_id');
     }
 
+    /**
+     * Get User details
+     */
+    public function class(){
+        return $this->hasOne('App\Models\Student\StudentClassDetail','student_id')->where('status', '1');
+    }
+
      /**
      * Save User
+     * 
      * @param Array $data
      * @return model
      */
-    public function SaveStudent($data){
+    public function SaveStudent($data,$id=null){
         
-        $this->fill($data);
-        $this->save();
-        return $this;
+        $model = $this;
+
+        if($id)
+        {
+            $model = $this->find($id);
+        }
+        
+        $model->fill($data);
+        $model->save();
+        return $model;
 
     }
 
     /**
      * Get student list
+     * 
      * @return Array
      */
     public function GetStudentList(){
         
         $response = [];
-        return $response = $this->with('user')->paginate(10)->toArray();
+        $response = $this->with(['user','class.detail'])->paginate(10);
+        return $response?$response->toArray():[];
+
+    }
+
+    /**
+     * Get A Student
+     * 
+     * @return Array
+     */
+    public function GetStudent($id){
+
+        $response = [];
+
+        if($id)
+        {
+            $response = $this->with(['user','class'])->where('id',$id)->first();
+            return $response?$response->toArray():[];
+        }
+
+        return $response;
 
     }
 }

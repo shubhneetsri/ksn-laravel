@@ -29,15 +29,34 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes for date format.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at'  => 'datetime:m-d-Y H:00',
+        'updated_at' => 'datetime:m-d-Y H:00',
+    ];
+
+    /**
      * Save User
+     * 
      * @param Array $data
+     * @param $id
      * @return model
      */
-    public function SaveUser($data){
+    public function SaveUser($data,$id=null){
         
-        $this->fill($data);
-        $this->save();
-        return $this;
+        $model = $this;
+
+        if($id)
+        {
+            $model = $this->find($id);
+        }
+        
+        $model->fill($data);
+        $model->save();
+        return $model;
 
     }
 

@@ -27,6 +27,7 @@ $factory->define(User::class, function (Faker $faker) {
         'address' => $faker->address,
         'state_id' => 1,
         'city_id' => 1,
+        'date_of_join' => $faker->date($format = 'Y-m-d', $max = 'now'),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
     ];
