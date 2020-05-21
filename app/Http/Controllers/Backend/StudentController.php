@@ -118,13 +118,16 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Request  $request)
     {
         $student = new Student();
-        $data = $student->GetStudentList();
+        $by = $request->by;
+        $sort = $request->sort;
+        $data = $student->GetStudentList($by,$sort);
 
         return view('student.list',['response' => $data]);
     }
@@ -195,7 +198,7 @@ class StudentController extends Controller
         }
         else
         {
-            return Redirect::back()->with('msg', 'Some error occured!');
+            return Redirect::back()->with('error_msg', 'Some error occured!');
         }
     }
     
@@ -207,6 +210,56 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $student = new Student();
+        $data = $student->GetStudent($id);
+       
+        // Delete student when refrences defined
+        $student_destroy = $student->Remove($data['id']);
+
+        if($student_destroy)
+        {
+            return Redirect::back()->with('msg', 'Record is deleted successfully.');
+        }
+        else
+        {
+            return Redirect::back()->with('error_msg', 'Record not remove!');
+        }
+        
+
+        /**Delete when refrences are not defined  
+        
+        // If resource exists
+        if($data)
+        {
+            $studentDetail = new StudentClassDetail();
+            $class_destroy = $studentDetail->Remove($data['class']['id']);
+       
+            // If class is deleted
+            if($class_destroy)
+            {
+                $user = new User();
+                $user_destroy = $user->Remove($data['user']['id']);
+
+                // If user deleted
+                if($user_destroy)
+                {
+                    // Delete student
+                    $student_destroy = $student->Remove($data['id']);
+                    return Redirect::back()->with('msg', 'Record is deleted successfully.');
+                }
+                else
+                {
+                    return Redirect::back()->with('error_msg', 'User is not removed!');
+                }
+
+            }
+            else
+            {
+                return Redirect::back()->with('error_msg', 'Class is not removed!');
+            }
+
+        }else{
+            return Redirect::back()->with('error_msg', 'Record not found to remove!');
+        }*/
     }
 }

@@ -20,6 +20,8 @@ class LoginController extends Controller
     |
     */
 
+    protected $loginPath = '/';
+
     use AuthenticatesUsers;
 
     /**

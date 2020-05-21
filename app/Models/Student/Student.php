@@ -68,10 +68,41 @@ class Student extends Model implements Authenticatable
      * 
      * @return Array
      */
-    public function GetStudentList(){
-        
+    public function GetStudentList($by=NULL,$sort=NULL)
+    {    
         $response = [];
-        $response = $this->with(['user','class.detail'])->paginate(10);
+
+        if($by)
+        {
+            $data = $this->with(['user','class.detail']);
+
+            if ($by == 'name' || $by == 'updated_at') 
+            {
+                $data->whereHas('user', function($query) use ($by,$sort) {
+                    return $query->orderBy($by, $sort);
+                });
+            }
+
+            if ($by == 'roman_name' || $by == 'roman_name') 
+            {
+                $data->whereHas('class.detail', function($query) use ($by,$sort) {
+                    return $query->orderBy($by, $sort);
+                });
+            }
+
+
+            if($by == 'father_name' || $by == 'caste' || $by == 'reg_number')
+            {
+                $data->orderBy($by, $sort);
+            }
+            
+            $response = $data->paginate(10);
+        }
+        else
+        {
+            $response = $this->with(['user','class.detail'])->paginate(10);
+        }
+        
         return $response?$response->toArray():[];
 
     }
@@ -81,8 +112,8 @@ class Student extends Model implements Authenticatable
      * 
      * @return Array
      */
-    public function GetStudent($id){
-
+    public function GetStudent($id)
+    {
         $response = [];
 
         if($id)
@@ -93,5 +124,17 @@ class Student extends Model implements Authenticatable
 
         return $response;
 
+    }
+
+    /**
+     * Delete Student
+     * 
+     * @param $id
+     * @return Bool
+     */
+    public function Remove($id)
+    {
+        $response = $this->find($id);
+        return $response?$response->delete():true;
     }
 }

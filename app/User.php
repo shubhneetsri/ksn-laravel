@@ -45,7 +45,8 @@ class User extends Authenticatable
      * @param $id
      * @return model
      */
-    public function SaveUser($data,$id=null){
+    public function SaveUser($data,$id=null)
+    {
         
         $model = $this;
 
@@ -58,6 +59,18 @@ class User extends Authenticatable
         $model->save();
         return $model;
 
+    }
+
+    /**
+     * Delete User
+     * 
+     * @param $id
+     * @return Bool
+     */
+    public function Remove($id)
+    {
+        $response = $this->find($id);
+        return $response?$response->delete():true;
     }
 
 }

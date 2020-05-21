@@ -63,10 +63,9 @@ class LoginTest extends TestCase
             "email" => "shubhneet@gmail.com",
             "password" => "111111",
         ];
-    
-        $response = $this->call('POST', 'login', $data);
-
-        $response->assertRedirect('/');
+     
+        $response = $this->call('POST', 'login', $data)->assertRedirect('/');
+       
         $this->assertTrue(Auth::check());
 
     }

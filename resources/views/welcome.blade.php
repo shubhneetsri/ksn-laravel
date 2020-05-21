@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="/add-student">{{__('display.project.student_module')}}</a>
+                    <a href="/student-list">{{__('display.project.student_module')}}</a>
                 </div>
             </div>
         </div>

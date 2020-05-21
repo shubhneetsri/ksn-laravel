@@ -65,6 +65,13 @@ html, body {
     padding: 7px 22px;
 }
 
+.navbar{
+
+    border: 1px solid #999;
+    border-radius: 25px 0px;
+
+}
+
 @media only screen and (max-width: 600px) {
     .jumbotron {
         padding: 1rem 2rem;

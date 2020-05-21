@@ -32,6 +32,7 @@ Route::group(['middleware' => ['logincheck']], function () {
     Route::post('/add-student/{id}', 'Backend\StudentController@update')->name('add-student');
     Route::post('/add-student', 'Backend\StudentController@store')->name('add-student');
     Route::get('/student-list', 'Backend\StudentController@show')->name('student-list');
+    Route::get('/student-destroy/{id}', 'Backend\StudentController@destroy')->name('student-destroy');
 
     // Fillable form elements routes
     Route::get('/get-classes', 'Common\api\SchoolController@getClasses');

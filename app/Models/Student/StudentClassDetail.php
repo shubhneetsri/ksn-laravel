@@ -26,7 +26,8 @@ class StudentClassDetail extends Model
     /**
      * Get User details
      */
-    public function detail(){
+    public function detail()
+    {
         return $this->belongsTo('App\Models\KsnClass','class_id');
     }
 
@@ -35,11 +36,23 @@ class StudentClassDetail extends Model
      * @param Array $data
      * @return model
      */
-    public function SaveStudentClass($data){
-        
+    public function SaveStudentClass($data)
+    {
         $this->fill($data);
         $this->save();
         return $this;
 
+    }
+
+    /**
+     * Delete Student Class
+     * 
+     * @param $id
+     * @return Bool
+     */
+    public function Remove($id)
+    {
+        $response = $this->find($id);
+        return $response?$response->delete():true;
     }
 }

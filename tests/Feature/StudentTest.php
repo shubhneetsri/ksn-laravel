@@ -29,13 +29,19 @@ class StudentTest extends TestCase
         $response1 = $this->call('GET', '/add-student');
         $response2 = $this->get('/student-list');
         $response3 = $this->get('/student-list?page=100');
-
+        $response4 = $this->get('/student-list?by=reg_number&sort=asc&page=1');
+        $response5 = $this->get('/student-list?by=father_name&sort=asc&page=1');
+        $response6 = $this->get('/student-list?by=caste&sort=asc&page=1');
+        
         $response1->assertStatus(200);
         $response2->assertStatus(200);
         $response3->assertStatus(200);
+        $response4->assertStatus(200);
+        $response5->assertStatus(200);
+        $response6->assertStatus(200);
     }
 
-    /**
+    /**I am shearing my example code with you. 
      * A student's table test.
      *
      * @return void
@@ -98,7 +104,8 @@ class StudentTest extends TestCase
 
         $user = new Student();
         $data = $user->first();
-        
+        $user = factory(StudentClassDetail::class, 1)->create();
+        $userCount = count($user) == 1; // check entries count
         $response = $this->call('GET', 'add-student'.'/'.$data->id);
 
         // Assert true
@@ -116,8 +123,9 @@ class StudentTest extends TestCase
         $this->be($user); //You are now authenticated
 
         $user = new Student();
-        $data = $user->GetStudent(1);
-     
+        $dummy_user = factory(StudentClassDetail::class, 1)->create();
+        $data = $user->GetStudent($dummy_user[0]->student_id);
+  
         $post = [
             'class_id' => $data['admission_class_id'],
             'username' => $data['user']['name'], //$this->faker->name,
@@ -139,6 +147,22 @@ class StudentTest extends TestCase
         ];
         
         $response = $this->call('POST', '/add-student'.'/'.$data['id'], $post)->assertRedirect('/student-list');
+    }
+
+    /**
+     * Test delete student
+     * 
+     * @return void
+     */
+    public function testStudentDelete(){
+
+        $user = new User(array('name' => 'John'));
+        $this->be($user); //You are now authenticated
+
+        $dummy_user = factory(StudentClassDetail::class, 1)->create();
+
+        $response = $this->from('student-list')->get('/student-destroy'.'/'.$dummy_user[0]->student_id)->assertRedirect('student-list');;
+
     }
 
 }
