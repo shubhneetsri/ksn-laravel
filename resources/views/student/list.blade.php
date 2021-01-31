@@ -91,7 +91,7 @@
             </tbody>
         </table>
         <nav aria-label="Page navigation example">
-        {{app('request')->query('sort')}}
+            {{app('request')->query('sort')}}
             @if ($response['last_page'] > 1)
             <ul class="pagination">
             <li class="page-item {{ ($response['current_page'] == 1) ? ' disabled' : '' }}">

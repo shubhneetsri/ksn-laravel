@@ -18,8 +18,7 @@
         <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
         <script src="{{ asset('js/jquery-ui.js') }}"></script>
         
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
+
 
     </head>
     <body>
@@ -54,7 +53,8 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre
+                                onClick="$('.dropdown-menu').toggle();">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 

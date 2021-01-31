@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Models\Student\Student;
 use App\Models\Student\StudentClassDetail;
+use App\Models\Student\StudentFees;
 use App\Helpers\Helper;
 use Session;
 use Redirect;
+use Auth;
 
 class StudentController extends Controller
 {
@@ -32,54 +34,69 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        // Validations
-        Validator::make($request->all(), [
-            'email' => 'required|email|unique:users|max:255',
-            'username' => 'required',
-            'phone' => 'required|numeric|unique:users',
-            'password' => 'sometimes|required|min:6|required_with:reenter_password|same:reenter_password',
-            'reenter_password' => 'min:6',
-            'state' => 'required',
-            'city' => 'required',
-        ]);
 
-        // Add user details
-        $user = new User();
-        $user_data['user_type'] = '1';
-        $user_data['name'] = $request->username;
-        $user_data['gender'] = $request->gender;
-        $user_data['email'] = $request->email;
-        $user_data['phonenumber'] = $request->phone;
-        $user_data['password'] = $request->password;
-        $user_data['image'] = '';
-        $user_data['dob'] = date('Y-m-d',strtotime($request->dob));
-        $user_data['address'] = $request->address;
-        $user_data['state_id'] = $request->state;
-        $user_data['city_id'] = $request->city;
-        $user_data['date_of_join'] = date('Y-m-d',strtotime($request->doj));
-        $user_data['status'] = 1;
-        $user = $user->SaveUser($user_data);
+        try {
+            // Validations
+            $validation = Validator::make($request->all(), [
+                'email' => 'required|email|unique:users|max:255',
+                'username' => 'required',
+                'phone' => 'required|numeric|unique:users,phonenumber',
+                'password' => 'sometimes|required|min:6|required_with:reenter_password|same:reenter_password',
+                'reenter_password' => 'min:6',
+                'state' => 'required',
+                'city' => 'required',
+            ]);
 
-        // Add student details
-        $student = new Student();
-        $student_data['user_id'] = $user->id;
-        $student_data['academic_year_id'] = $request->academic_year_id;
-        $student_data['admission_class_id'] = $request->class_id;
-        $student_data['mother_name'] = $request->mother_name;
-        $student_data['father_name'] = $request->father_name;
-        $student_data['caste'] = $request->caste;
-        $student_data['current_address'] = $request->current_address;
-        $student_data['reg_number'] = Helper::getRegistrationCode($user->id);
-        $student = $student->SaveStudent($student_data);
+        
+            if ($validation->fails())
+            {
+                $errors = $validation->messages()->get('*');
+                foreach($errors as $key=>$val){
+                    Session::flash('message', $key); 
+                    Session::flash('alert-class', 'alert-danger'); 
+                    return ['status' => 'error', 'message' => $val, 'data' => ['for' => $key]]; 
+                }
+            }
 
-        // Add student class details
-        $studentDetail = new StudentClassDetail();
-        $detailData['student_id'] = $student->id;
-        $detailData['class_id'] = $request->class_id;
-        $detailData['academic_year_id'] = $request->academic_year_id;
-        $studentDetail->SaveStudentClass($detailData);
+            // Add user details
+            $user = new User();
+            $user_data['user_type'] = '1';
+            $user_data['name'] = $request->username;
+            $user_data['gender'] = $request->gender;
+            $user_data['email'] = $request->email;
+            $user_data['phonenumber'] = $request->phone;
+            $user_data['password'] = $request->password;
+            $user_data['image'] = '';
+            $user_data['dob'] = date('Y-m-d',strtotime($request->dob));
+            $user_data['address'] = $request->address;
+            $user_data['state_id'] = $request->state;
+            $user_data['city_id'] = $request->city;
+            $user_data['date_of_join'] = date('Y-m-d',strtotime($request->doj));
+            $user_data['status'] = 1;
+            $user = $user->SaveUser($user_data);
 
-        return redirect('/student-list')->with('msg', 'You have successfully register a student.');
+            // Add student details
+            $student = new Student();
+            $student_data['user_id'] = $user->id;
+            $student_data['academic_year_id'] = $request->academic_year_id;
+            $student_data['caste'] = $request->caste;
+            $student_data['current_address'] = $request->current_address;
+            $student_data['reg_number'] = Helper::getRegistrationCode($user->id);
+            $student = $student->SaveStudent($student_data);
+
+            // Add student class details
+            $studentFees = new StudentFees();
+            $feeData['student_id'] = $student->id;
+            $feeData['academic_year_id'] = $request->class_id;
+            $feeData['fee_id'] = $request->academic_year_id;
+            $studentFees->SaveStudentClass($feeData);
+        
+            echo "Sucecss";
+        } catch (\Exception $e) {
+            $output['errors'][] = ['invalid' => 1, 'for' => 'form_error' , 'message' => 'Something went wrong!'];
+
+        }
+        //return redirect('/student-list')->with('msg', 'You have successfully register a student.');
 
     }
 
@@ -128,7 +145,7 @@ class StudentController extends Controller
         $by = $request->by;
         $sort = $request->sort;
         $data = $student->GetStudentList($by,$sort);
-
+//dd(Auth::user()->getAllPermissions());
         return view('student.list',['response' => $data]);
     }
 
