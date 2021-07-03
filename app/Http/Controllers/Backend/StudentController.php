@@ -160,6 +160,7 @@ class StudentController extends Controller
             
             // Add user details
             $user = new User();
+            
             $user_data['user_type'] = '1';
             $user_data['name'] = $request->username;
             $user_data['gender'] = $request->gender;
@@ -167,6 +168,8 @@ class StudentController extends Controller
             $user_data['phonenumber'] = $request->phone;
             $user_data['password'] = $request->password;
             $user_data['image'] = '';
+
+
             $user_data['dob'] = date('Y-m-d',strtotime($request->dob));
             $user_data['address'] = $request->address;
             $user_data['state_id'] = $request->state;
@@ -186,6 +189,7 @@ class StudentController extends Controller
             $student_data['reg_number'] = Helper::getRegistrationCode($user->id);
             $student = $student->SaveStudent($student_data,$data['id']);
 
+            // Git Changes By Me
             /* Add student class details
             $studentDetail = new StudentClassDetail();
             $detailData['student_id'] = $student->id;
@@ -203,7 +207,7 @@ class StudentController extends Controller
     }
     
     /*
-     * Remove the specified resource from storage.
+     * Remove specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
