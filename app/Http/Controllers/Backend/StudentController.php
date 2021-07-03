@@ -9,6 +9,8 @@ use App\User;
 use App\Models\Student\Student;
 use App\Models\Student\StudentClassDetail;
 use App\Models\Student\StudentFees;
+use Illuminate\Http\Response;
+use Cookie;
 use App\Helpers\Helper;
 use Session;
 use Redirect;
@@ -36,6 +38,8 @@ class StudentController extends Controller
     {
 
         try {
+
+            dd($request);
             // Validations
             $validation = Validator::make($request->all(), [
                 'email' => 'required|email|unique:users|max:255',
@@ -107,6 +111,7 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
+        
         $data = [];
         
         // If resource id exists
@@ -132,6 +137,20 @@ class StudentController extends Controller
         
     }
 
+    private function setCookie($key,$values) {
+
+        $minutes = 2;
+        echo "test";
+        $response = new Response('Hello World');
+
+//Call the withCookie() method with the response method
+return $response->withCookie(cookie($key, $values, $minutes));
+
+        //Call the withCookie() method with the response method
+        //return Cookie::queue($key, $values, $minutes);
+
+     }
+
     /**
      * Display the specified resource.
      *
@@ -141,6 +160,145 @@ class StudentController extends Controller
      */
     public function show(Request  $request)
     {
+
+        //dd($request->session()->get('10.10.140.222'));
+
+        $id =   Auth::user()->id;
+        $userModel = new User();
+        $data = $userModel->GetUser($id);
+
+        if($data['access_token']){
+            
+            $url = 'http://10.10.15.19/api/test.php';
+            $fields = array(
+                'access_token' => $data['access_token'],
+                'secret' => 1234,
+            );
+
+            //url-ify the data for the POST
+            $fields_string = '';
+            foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+            rtrim($fields_string, '&');
+
+
+            //open connection
+            $ch = curl_init();
+
+            //set the url, number of POST vars, POST data
+            curl_setopt($ch,CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1); 
+            curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+            // return the transfer as a string, also with setopt()
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+
+            //execute post
+            $result = curl_exec($ch);
+            $info = curl_getinfo($ch);
+
+            $result_arr = json_decode($result,true);
+            sleep(5);
+            
+
+            if($result_arr['status'] == 'error'){
+
+                echo "<pre>";print_r($result_arr);echo "</pre>";
+
+                $url = 'http://10.10.15.19/api/authorization_two.php.php';
+                $fields = array(
+                    'lname' => urlencode('test'),
+                    'fname' => urlencode('test'),
+                    'refresh_token_request' => 1,
+                    'access_token' => $data['access_token'],
+                    'refresh_token_request' => $data['refresh_access_token'],
+                    'secret' => urlencode(1234),
+                    'email' => urlencode('test'),
+                );
+
+                //url-ify the data for the POST
+                $fields_string = '';
+                foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                rtrim($fields_string, '&');
+
+
+                //open connection
+                $ch = curl_init();
+
+                //set the url, number of POST vars, POST data
+                curl_setopt($ch,CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+                curl_setopt($ch,CURLOPT_POST, count($fields));
+                curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                // return the transfer as a string, also with setopt()
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 0);
+
+                //execute post
+                $result = curl_exec($ch);
+
+                $result_arr = json_decode($result,true);
+                
+
+                if (!curl_errno($ch)) {
+                    $info = curl_getinfo($ch);
+                    echo 'Took ', $info['total_time'], ' seconds to send a request to ', $info['url'], "\n";
+                  }
+                  curl_close($ch);
+                dd($result);
+                
+                // Add user details
+                $user = new User();
+                $user_data['access_token'] = $result_arr['access_token'];
+                $user_data['refresh_access_token'] = $result_arr['refresh_access_token'];
+                $user = $user->SaveUser($user_data,$id);
+                
+
+            }
+
+        }else{
+
+            $url = 'http://10.10.15.19/api/authorization_two.php.php';
+            $fields = array(
+                'lname' => urlencode('test'),
+                'fname' => urlencode('test'),
+                'secret' => urlencode(1234),
+                'email' => urlencode('test'),
+            );
+
+            //url-ify the data for the POST
+            $fields_string = '';
+            foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+            rtrim($fields_string, '&');
+
+
+            //open connection
+            $ch = curl_init();
+
+            //set the url, number of POST vars, POST data
+            curl_setopt($ch,CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+            curl_setopt($ch,CURLOPT_POST, count($fields));
+            curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+            // return the transfer as a string, also with setopt()
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+            //execute post
+            $result = curl_exec($ch);
+
+            $result_arr = json_decode($result,true);
+            
+            // Add user details
+            $user = new User();
+            $user_data['access_token'] = $result_arr['access_token'];
+            $user_data['refresh_access_token'] = $result_arr['refresh_access_token'];
+            $user = $user->SaveUser($user_data,$id);
+            dd($user);
+
+        }
+
+
+
+
+
         $student = new Student();
         $by = $request->by;
         $sort = $request->sort;

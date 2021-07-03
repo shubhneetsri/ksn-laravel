@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id', 'user_type', 'name', 'email', 'password', 'gender', 'phonenumber', 'image', 'dob', 'address', 'state_id', 'city_id', 'status'
+        'id', 'user_type', 'name', 'email', 'password', 'gender', 'phonenumber', 'image', 'dob', 'address', 'state_id', 'city_id', 'status', 'access_token', 'refresh_access_token'
     ];
 
     /**
@@ -73,6 +73,25 @@ class User extends Authenticatable
     {
         $response = $this->find($id);
         return $response?$response->delete():true;
+    }
+
+    /**
+     * Get User
+     * 
+     * @return Array
+     */
+    public function GetUser($id)
+    {
+        $response = [];
+
+        if($id)
+        {
+            $response = $this->where('id',$id)->first();
+            return $response?$response->toArray():[];
+        }
+
+        return $response;
+
     }
 
 }

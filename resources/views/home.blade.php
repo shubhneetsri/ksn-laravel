@@ -3,11 +3,8 @@
 @section('content')
 
                 <h2>Krishna Shishu Niketan</h2>
-                <p>Resize the browser window to see the effect.Resize the browser window to see the effect.Resize the browser window to see the effect.
-                Resize the browser window to see the effect.Resize the browser window to see the effect.Resize the browser window to see the effect.
-                Resize the browser window to see the effect.Resize the browser window to see the effect.Resize the browser window to see the effect.
-                Resize the browser window to see the effect.Resize the browser window to see the effect.Resize the browser window to see the effect.
-                Resize the browser window to see the effect.Resize the browser window to see the effect.
+                <p>Krishna Shishu Niketan provides classes from NC to VIIIth for children between the ages of 3 to 11 being brought up in Hindi and English medium environment. Many of the children have passed out from our school working in several good institutions. Krishna Shishu Niketan is a recognized by the government and was established in 1986. It is run by a team of administrators and fully trained B.ed qualified mother tongue teachers.<br/><br/>
+                Our teachers are all native Hindi and English speakers. They are qualified and are highly dedicated to creating a fun, friendly, but also hardworking environment at Krishna Shishu Niketan, Shahjahanpur. Some of our teachers some of are working professionals in diffrent industries.
                 </p>
                 <br>
                 
@@ -38,7 +35,7 @@
                     </div>
                 </div>
                 
-                <div class="column">
+                <!--<div class="column">
                     <div class="card">
                     <img src="/images/users/team2.jpg" alt="John" style="width:100%">
                     <div class="container">
@@ -49,7 +46,7 @@
                         <p><button class="button">Contact</button></p>
                     </div>
                     </div>
-                </div>
+                </div>-->
                 </div>
 
 <div class="container">
