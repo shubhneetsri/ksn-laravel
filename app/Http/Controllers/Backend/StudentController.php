@@ -12,8 +12,7 @@ use App\Helpers\Helper;
 use Session;
 use Redirect;
 
-class StudentController extends Controller
-{
+class StudentController extends Controller{
      /**
      * Display the specified resource.
      *
