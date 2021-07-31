@@ -5,10 +5,10 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Auth;
-use App\User;
-use App\Models\Student\Student;
 use App\Models\Student\StudentClassDetail;
+use App\Models\Student\Student;
+use App\User;
+use Auth;
 use Str;
 
 class StudentTest extends TestCase
