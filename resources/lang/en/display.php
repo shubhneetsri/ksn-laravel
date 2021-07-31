@@ -14,7 +14,7 @@ return [
     */
 
     'project' => [
-        'name' => 'Example System',
+        'name' => 'KSN System',
         'student_module' => 'Student Management',
         'staff_module' => 'Staff Management' 
     ],

@@ -24,60 +24,47 @@
     <body>
     
         <div class="jumbotron">
-        <nav class="navbar navbar-expand-md navbar-light  shadow-sm">
+        <nav class=" navbar-expand-md navbar-light  shadow-sm">
             <div class="container">
-                <h3>
-                    {{__('display.project.student_module')}}
-                </h3>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre
-                                onClick="$('.dropdown-menu').toggle();">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-
-                                    <a class="dropdown-item" href="/" >
-                                        Home
-                                    </a>
-
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                    
+                        @if (Route::has('login'))
+                            <div class="top-right links">
+                                @auth
+                                    <a href="{{ url('/') }}">Home</a>
+                                    <a  href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+
+                                @else
+                                    <a href="{{ route('login') }}">Login</a>
+
+                                    @if (Route::has('register'))
+                                        <a href="{{ route('register') }}">Register</a>
+                                    @endif
+                                @endauth
+                            </div>
+                        @endif
+                        <div class="content">
+                            <!--<div class="title m-b-md">
+                            {{__('display.project.name')}}
+                            </div>-->
+
+                            <div class="links">
+                                <a href="/student-list">{{__('display.project.student_module')}}</a>
+                            </div>
+                        </div>
                 </div>
             </div>
         </nav>

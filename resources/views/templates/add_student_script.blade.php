@@ -166,7 +166,7 @@
                             minlength: 10,
                             maxlength: 13,
                         },
-                        password: {
+                        /*password: {
                             //required: true,
                             minlength: 6,
                         },
@@ -187,17 +187,30 @@
                         },
                         city: {
                             required: true,
-                        }
-
+                        }*/
                     },
                     messages: {
                         username: 'This field is required'
-                    }/*,
-                    submitHandler: function (form) {
-
-                        // Form data   
+                    },
+                    submitHandler: function (form, event) {
                         
-                    }*/
+                        event.preventDefault();
+
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ route('add-student') }}",
+                            headers: { 'csrftoken' : '{{ csrf_token() }}' },
+                            data: $(form).serialize(), // serializes the form's elements.
+                            success: function(data)
+                            {
+                                if(data.status == 'error'){
+                                    location.reload();
+                                }
+                            }
+                        });
+
+                        return false; // required to block normal submit ajax used
+                    }
                 });
 
                 // Datepicker

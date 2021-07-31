@@ -25,48 +25,13 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                <th scope="col"># 
-                    <a href="?by=reg_number&sort=asc" >
-                        <i class="fa fa-sort-asc"></i>
-                    </a>
-                    <a href="?by=reg_number&sort=desc" >
-                        <i class="fa fa-sort-desc"></i>
-                    </a>
-                </th>
-                <th scope="col">Name
-                    <!--<a href="?by=name&sort=asc" >
-                        <i class="fa fa-sort-asc"></i>
-                    </a>
-                    <a href="?by=name&sort=desc" >
-                        <i class="fa fa-sort-desc"></i>
-                    </a>-->
-                </th>
-                <th scope="col">Father's Name
-                    <a href="?by=father_name&sort=asc" >
-                        <i class="fa fa-sort-asc"></i>
-                    </a>
-                    <a href="?by=father_name&sort=desc" >
-                        <i class="fa fa-sort-desc"></i>
-                    </a>
-                </th>
-                <th scope="col">Caste
-                    <a href="?by=caste&sort=asc" >
-                        <i class="fa fa-sort-asc"></i>
-                    </a>
-                    <a href="?by=caste&sort=desc" >
-                        <i class="fa fa-sort-desc"></i>
-                    </a>
-                </th>
-                <th scope="col">Phone</th>
-                <th scope="col">Class
-                    <!--<a href="?by=roman_name&sort=asc" >
-                        <i class="fa fa-sort-asc"></i>
-                    </a>
-                    <a href="?by=roman_name&sort=desc" >
-                        <i class="fa fa-sort-desc"></i>
-                    </a>-->
-                </th>
-                <th scope="col">Updated On</th>
+                <th scope="col"># </th>
+                <th scope="col">Name</th>
+                <th scope="col">Class</th>
+                <th scope="col">March | April | May</th>
+                <th scope="col">June | July | Aug</th>
+                <th scope="col">Sept | Oct | Nov</th>
+                <th scope="col">Dec | Jan | Feb</th>
                 <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -74,16 +39,16 @@
             @if($response['data'])
                 @foreach($response['data'] as $row)
                 <tr>
-                    <td>{{$row['reg_number']}}</td>
-                    <td>{{@$row['user']['name']}}</td>
-                    <td>{{$row['father_name']}}</td>
-                    <td>{{$row['caste']}}</td>
-                    <td>{{@$row['user']['phonenumber']}}</td>
-                    <td>{{@$row['class']['detail']['roman_name']}}</td>
-                    <td>{{@$row['user']['updated_at']}}</td>
+                    <td>{{$row['student']['reg_number']}}</td>
+                    <td>{{@$row['student']['user']['name']}}</td>
+                    <td></td>
+                    <td>{{@$row['march']}} | {{@$row['april']}} | {{@$row['may']}}</td>
+                    <td>{{@$row['june']}} | {{@$row['july']}} | {{@$row['aug']}}</td>
+                    <td>{{@$row['sept']}} | {{@$row['oct']}} | {{@$row['nov']}}</td>
+                    <td>{{@$row['dec']}} | {{@$row['jan']}} | {{@$row['feb']}}</td>
                     <td>
-                    <a href="/add-student/{{$row['id']}}"><i class="fa fa-edit"></i></a>
-                    <a href="/student-destroy/{{$row['id']}}" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
+                    <a href=""><i class="fa fa-edit"></i></a>
+                    <a href="" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
                 @endforeach
@@ -91,7 +56,7 @@
             </tbody>
         </table>
         <nav aria-label="Page navigation example">
-            {{app('request')->query('sort')}}
+        {{app('request')->query('sort')}}
             @if ($response['last_page'] > 1)
             <ul class="pagination">
             <li class="page-item {{ ($response['current_page'] == 1) ? ' disabled' : '' }}">

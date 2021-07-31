@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 // Authentication routes
@@ -33,6 +33,14 @@ Route::group(['middleware' => ['logincheck']], function () {
     Route::post('/add-student', 'Backend\StudentController@store')->name('add-student');
     Route::get('/student-list', 'Backend\StudentController@show')->name('student-list');
     Route::get('/student-destroy/{id}', 'Backend\StudentController@destroy')->name('student-destroy');
+
+    // Student fees routes
+    Route::get('/add-student-fee', 'Backend\StudentFeeController@index')->name('add-student-fee');
+    Route::get('/add-student-fee/{id}', 'Backend\StudentFeeController@edit')->name('add-student-fee');
+    Route::post('/add-student-fee/{id}', 'Backend\StudentFeeController@update')->name('add-student-fee');
+    Route::post('/add-student-fee', 'Backend\StudentFeeController@store')->name('add-student-fee');
+    Route::get('/student-fee-list', 'Backend\StudentFeeController@show')->name('student-fee-list');
+    Route::get('/student-fee-destroy/{id}', 'Backend\StudentFeeController@destroy')->name('student-fee-destroy');
 
     // Fillable form elements routes
     Route::get('/get-classes', 'Common\api\SchoolController@getClasses');
